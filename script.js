@@ -1,5 +1,6 @@
 const gameContainer = document.getElementById("game");
 
+//set the array to 5 unique gif links, then repeat them, so we have 2 of each
 const gifs = [
   "https://media1.giphy.com/media/DgLsbUL7SG3kI/source.gif", 
   "https://media.giphy.com/media/xTiTnKH3dDw1ww53R6/giphy.gif",
@@ -68,12 +69,13 @@ let prevImgs = [];
 function handleCardClick(event) {  
   //function to compare our gifs - this is not run until it is called down below
   function compareGifs() {
+    //this takes off the last 2 items in the array
     let lastTwoClassNames = prevClassNames.splice(-2, 2);
     let lastTwoImgs = prevImgs.splice(-2, 2);
     //if the class names in the array prevClassNames both match each other, then stop this function
     if(lastTwoClassNames.every(item => item === lastTwoClassNames[0])) {
       return;
-    } else {//if they don't, then turn them back to blank cards after 1 second, by removing newImg from the parent div
+    } else {//if they don't, then turn them back to blank cards after 1 second, by removing the img element from the parent div (or event.target)
       setTimeout(function() {
         for(let img of lastTwoImgs) {
           img.firstElementChild.remove();
@@ -91,9 +93,9 @@ function handleCardClick(event) {
   countClicks += 1;//add 1 to the click counter
   prevClassNames.push(event.target.className);//add the className, or the link to the gif in the div, to the prevClassNames array
 
-  prevImgs.push(event.target);//set newImg to a variable so we can reference it in the compareGifs function
+  prevImgs.push(event.target);//add the whole div, now with the img inside of it (its first/lastElementChild), that was clicked on to the prevImgs array declared above
 
-  if(countClicks % 2 === 0) {//as soon as we click on 2 divs, we need to check to see if they match or not, so we'll call our compareGifs function
+  if(countClicks % 2 === 0) {//every 2 divs clicked, we need to check to see if they match or not, so we'll call our compareGifs function
     compareGifs();
   }
 }
